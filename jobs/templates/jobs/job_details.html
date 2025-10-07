@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block main %}
+
+<style>
+    .job-detail-box {
+        margin: 30px;
+        width:600px;
+        background: white;
+        padding: 25px;
+        border: 1px solid gray;
+        border-radius: 8px;
+    }
+    .header {
+        border-bottom: 1px solid gray;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    .header h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #2c3e50;
+    }
+    .header p {
+        margin: 5px 0 0 0 ;
+        color: #555;
+    }
+    .desc {
+        margin: 20px 0;
+        color: black;
+    }
+    .details {
+        margin-top: 20px;
+    }
+    .details p {
+        margin: 8px 0;
+        color: #575757ff;
+    }
+    .cname {
+        font-weight: 700;
+        color: #2c7be5;
+    }
+    .actions {
+        margin-top: 25px;
+        display: flex;
+        gap: 15px;
+    }
+    .actions a {
+        flex: 1;
+        text-align: center;
+        padding: 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+            .btn {
+      background: #1E90FF;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      max-width:200px;
+    }
+    
+    .btn:hover {
+      background: #1c77d3ff;
+      color:white;
+    }
+  
+</style>
+
+<div class="job-detail-box">
+    <div class="header">
+        <h1>{{ job.job_title }}</h1>
+        <p><span class="cname">{{ job.company.company_name }}</span> — Posted by <a href="" class="ename"> {{ job.employer }}</a></p>
+    </div>
+
+    <div class="desc">
+        <h3>Description</h3>
+        <p>{{ job.job_description }}</p>
+    </div>
+
+    <div class="details">
+        <p><strong>Location:</strong> {{ job.location }}</p>
+        <p><strong>Salary:</strong> {{ job.salary }}</p>
+        <p><strong>Job Type:</strong> {{ job.job_type }}</p>
+        <p><strong>Deadline:</strong> {{ job.deadline }}</p>
+    </div>
+    {% if request.user.user_type == 'J' %}
+    <div class="actions">
+        <a href="{% url 'job_application' job.id%}" class="btn">Apply Now</a>
+        <a href="{% url 'save_job' job.id %}" class="btn">Save for Later</a>
+    </div>
+    {% else %}
+
+    <div class="actions">
+        <a href="{% url 'delete_job' job.id %}" class="btn btn-danger">Delete Job</a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

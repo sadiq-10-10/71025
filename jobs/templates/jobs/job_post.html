@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block main %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f6f8;
+    }
+    .job-box {
+        width: 500px;
+        margin: 30px auto;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    label {
+        display: block;
+        margin-top: 12px;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #222;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #bbb;
+        border-radius: 5px;
+    }
+    textarea {
+        min-height: 100px;
+    }
+    .btn-submit {
+        margin-top: 18px;
+        width: 100%;
+        padding: 10px;
+        background-color: #2c7be5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+    .btn-submit:hover {
+        background-color: #1e5bb8;
+    }
+</style>
+
+<div class="job-box">
+    <h1>Post Your Job</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+             {{ form.as_p }}
+
+        <button type="submit" class="btn-submit">Post Job</button>
+    </form>
+</div>
+
+{% endblock %}

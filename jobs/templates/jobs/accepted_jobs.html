@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>Accepted Jobs</h1>
+<div class="row">
+    {% for job in jobs %}
+    <div class="col-sm-4" style="padding: 16px;justify-content: space-around;">
+        <div class="card" style="margin: 16px;">
+            <div class="card-body">
+                <h5 class="card-title">{{job.job.job_title}} at {{job.job.company_name}}</h5>
+                <p class="card-text">Accepted at:{{job.job.applied_on}}</p>
+                
+                <a href="{% url 'job_details' job.job.id %}" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Nothing to see here</p>
+    {% endfor %}
+</div>                                                         
+
+{% endblock main %}

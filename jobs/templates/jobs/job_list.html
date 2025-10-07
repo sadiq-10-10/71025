@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block main %}
+<h2>Avalaible Jobs</h2>
+<div class="row">
+    {% for job in jobs %}
+  <div class="col-sm-4" style="padding: 16px;justify-content: space-around;">
+      <div class="card" style="margin: 16px;">
+      <div class="card-body">
+        <h5 class="card-title">{{job.job_title}} at {{job.company.company_name}}</h5>
+        <p class="card-text">{{job.job_description}}</p>
+        <a href="{% url 'job_details' job.id %}" class="btn btn-primary">Details</a>
+      </div>
+    </div>
+</div>
+{% empty %}
+<h4>Sorry, there are no jobs avalaible in </h4>
+{% endfor %}
+</div>
+{% endblock main %}                                                      

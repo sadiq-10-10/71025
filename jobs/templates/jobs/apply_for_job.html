@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block main %}
+
+<style>
+
+    .container {
+        max-width: 650px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 25px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+    .container h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+    .apply-form label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #444;
+    }
+    .apply-form input[type="text"],
+    .apply-form input[type="file"],
+    .apply-form textarea,
+    .apply-form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    .apply-form textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+    .apply-btn {
+        background: #1E90FF;
+        width : 100%;
+        color: white;
+        padding: 12px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight:700;
+    }
+    .apply-btn:hover {
+        background: #1975d0ff;
+    }
+</style>
+
+<div class="container">
+    <h1>Apply For {{ job.job_title }} at {{ job.company_name }} {{ job.salary }}</h1>
+    
+    <form action="" method="POST" enctype="multipart/form-data" class="apply-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="apply-btn">Apply</button>
+    </form>
+</div>
+
+{% endblock %}
+    

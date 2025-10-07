@@ -1,0 +1,565 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+{% if request.user.is_authenticated  and request.user.user_type == 'J' %}
+
+
+<style>
+  body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: #333;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem 0;
+  }
+
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 400px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-left {
+    flex: 1;
+    padding-right: 2rem;
+  }
+
+  .hero-left h2 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .hero-left p.sub-text {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-bar {
+    display: flex;
+    margin-top: 1rem;
+  }
+
+  .search-bar input {
+    width: 300px;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+  }
+
+  .search-bar button {
+    background: #1e90ff;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+  }
+
+  .hero-right {
+    flex: 1;
+    text-align: center;
+  }
+
+  .hero-right img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 1.5rem;
+    flex: 1;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+
+  .stat-card h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #1e90ff;
+  }
+
+  .jobs h3,
+  .saved-jobs h3 {
+    color: #1e90ff;
+    margin-bottom: 1rem;
+  }
+
+  .job-card,
+  .saved-card {
+    background: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .apply-btn,
+  .save-btn,
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-right: 8px;
+  }
+
+  .apply-btn {
+    background: #1e90ff;
+    color: white;
+  }
+
+  .save-btn {
+    background: #f0f0f0;
+    color: #333;
+  }
+
+  .saved-jobs {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 2rem;
+  }
+</style>
+
+<div class="container">
+  <section class="hero">
+    <div class="hero-left">
+      <h2>Welcome back, {{ user.name }}</h2>
+      <p class="sub-text">Finding a job had never been this easy</p>
+      <div class="search-bar">
+        <form method="get" action="/jobs/search/">
+          <input name="q" type="text" placeholder="Search by keyword"/>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="{% static 'images/welcome.png' %}" alt="Job search illustration"/>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stat-card">
+      <h3>{{ajobs}}</h3>
+      <p>Applied Jobs</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{sjobs}}</h3>
+      <p>Saved Jobs</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{total}}</h3>
+      <p>Available Jobs</p>
+    </div>
+  </section>
+
+  <section class="jobs">
+    <h3>Recommended Jobs</h3>
+    {% for job in reco_jobs %}
+    <div class="job-card">
+      <h4>{{job.job_title}}</h4>
+      <p>{{job.company.company_name}}</p>
+      <a href="{% url 'job_application' job.id %}" class="apply-btn">Apply Now</a>
+      <a href="{% url 'save_job' job.id %}" class="save-btn">Save for Later</a>
+    </div>
+    {% endfor %}
+  </section>
+
+  <section class="saved-jobs">
+    <h3>Saved Jobs</h3>
+    <div class="saved-list">
+      {% for job in savedjobs %}
+      <div class="saved-card">
+        <h4>{{job.job.job_title}}</h4>
+        <p>{{job.job.company.company_name}}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <a href="{% url "saved_jobs" %}" class="btn">View All</a>
+  </section>
+</div>
+
+
+{% elif request.user.is_authenticated and request.user.user_type == 'E' %}
+
+
+<style>
+  body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: #333;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem 0;
+  }
+
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 300px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-left {
+    flex: 1;
+    padding-right: 2rem;
+  }
+
+  .hero-left h2 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .hero-left p.sub-text {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-box {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-box h4 {
+    margin-bottom: 1rem;
+    color: #1E90FF;
+  }
+
+  .job-list,
+  .app-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .job-card,
+  .app-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  }
+
+  .job-card h5,
+  .app-card h5 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1E90FF;
+  }
+
+  .job-card p,
+  .app-card p {
+    margin: 0.5rem 0;
+    color: #555;
+    font-size: 0.9rem;
+  }
+
+          .btn {
+      background: #1E90FF;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      max-width:200px;
+    }
+    
+    .btn:hover {
+      background: #1c77d3ff;
+      color:white;
+    }
+
+  .text-muted {
+    color: #777;
+    font-size: 0.9rem;
+  }
+</style>
+
+<div class="container">
+  <section class="hero">
+    <div class="hero-left">
+      <h2>Welcome back, {{ user.name }}</h2>
+      <p class="sub-text">Hiring talent has never been this easy</p>
+    </div>
+  </section>
+
+  <div class="section-box">
+    <h4>Jobs Posted</h4>
+    <div class="job-list">
+      {% for job in jobs %}
+      <div class="job-card">
+        <h5>{{ job.job_title }}</h5>
+        <p>{{ job.job_description|truncatewords:15 }}</p>
+        <a href="{% url 'job_details' job.id %}" class="btn btn-primary">View</a>
+      </div>
+      {% empty %}
+      <p class="text-muted">No jobs posted yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="section-box">
+    <h4>Applications Received</h4>
+    <div class="app-list">
+      {% for app in applications %}
+      <div class="app-card">
+        <p>{{ app.seeker.name }} applied for <strong>{{ app.job.job_title }}</strong></p>
+        <a href="{% url 'accept_application' app.id %}" class="btn btn-success">Accept</a>
+        <a href="{% url 'reject_application' app.id %}" class="btn btn-danger">Reject</a>
+      </div>
+      {% empty %}
+      <p class="text-muted">No applications received yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="section-box">
+    <h4>Accepted Applications</h4>
+    <div class="app-list">
+      {% for app in accepted %}
+      <div class="app-card">
+        <p>{{ app.seeker.name }} - {{ app.job.job_title }}</p>
+      </div>
+      {% empty %}
+      <p class="text-muted">No accepted applications yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="section-box">
+    <h4>Rejected Applications</h4>
+    <div class="app-list">
+      {% for app in rejected %}
+      <div class="app-card">
+        <p>{{ app.seeker.name }} - {{ app.job.job_title }}</p>
+      </div>
+      {% empty %}
+      <p class="text-muted">No rejected applications yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+
+{% else %}
+    <style>
+      body {
+        font-family: Poppins, sans-serif;
+        background-color: #f5f5f5; 
+        color: #1C1C1C;
+      }
+      
+      h1, h2, h3 {
+        color: #1E90FF;
+        margin-bottom: 10px;
+        font_weight:700;
+    }
+    
+    p {
+      margin-bottom: 20px;
+      font-size:18px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 0;
+    }
+    
+    section {
+      max-width:1100px;
+      border-bottom: 1px solid #333;
+    }
+    
+    .welcome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .welcome-text {
+      width: 50%;
+    }
+    
+    .welcome img {
+      width: 45%;
+      border-radius: 8px;
+    }
+    
+    
+    .job-card {
+      background: #ffffff;
+      color: #000000;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 14px;
+      display: inline-block;
+      margin: 10px 30px 0 30px;
+      min-width:300px;
+      border: 1px solid #555
+        }
+
+    .job-card:hover {
+      border-color: #1E90FF;
+      background: #f0f8ff;
+      cursor: pointer;
+            }
+    
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    
+    .step {
+      width:250px;
+      min-height:120px;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      justify-text:center;
+      gap: 20px;
+      background: #ffffff
+    } 
+    .partners {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .partners img {
+      width: 120px;
+    }
+    .final {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn {
+      background: #1E90FF;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+    }
+    
+    .btn:hover {
+      background: #1c77d3ff;
+      color:white;
+
+    }
+    .how-it-works .steps {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+
+
+  </style> 
+  <section class="welcome container">
+    <div class="welcome-text">
+      <h1>Welcome to SkillBridge</h1>
+      <p>Find your dream job or the perfect candidate. We make hiring and job searching simple, smooth, and professional.</p>
+      <a class="btn" href="{% url "login" %}">Login</a>
+      &nbsp;
+      &nbsp;
+      
+
+      <a class="btn" href="{% url "register" %}">Get Started</a>
+    </div>
+
+    <img src="static/welcome.png" alt="Welcome Image">
+  </section>
+  
+
+  <section class="container">
+    <h2>Featured Jobs</h2>
+    <div class="jobs">
+      {% if jobs %}
+      {% for job in jobs %}
+
+      <a href="{% url "login" %}">
+        <div class="job-card">
+          <h3>{{job.job_title}}</h3>
+          <p>{{job.company.company_name}}</p>
+        </div>
+      </a>
+      {% endfor %}
+      {% endif %}
+
+    </div>
+  </section>
+  
+<section class="about container">
+  <h2>About Us</h2>
+  <p>
+    SkillBridge is a platform designed to connect talented individuals with the right career opportunities. 
+    We understand the challenges faced by both employers and job seekers — from time-consuming processes 
+    to limited visibility. That’s why we focus on making recruitment simple, transparent, and efficient.
+  </p>
+  <p>
+    Whether you're a fresher exploring your first job or a company searching for skilled professionals, 
+    SkillBridge ensures that the right people meet at the right time. With verified partners, a seamless 
+    user experience, and modern tools, we are committed to empowering careers and building successful teams.
+  </p>
+</section>
+
+
+
+
+  <section class="container">
+    <h2 style="margin-bottom:50px;">Our Partners</h2>
+    <div class="partners">
+     <a href="https://www.infosys.com/"> <img src="static/images/partner1.png" alt="Partner 1"></a>
+     <a href="https://www.accenture.com/in-en"> <img src="static/images/partner2.png" alt="Partner 2"></a>
+     <a href="https://www.tcs.com/careers"> <img src="static/images/partner3.png" alt="Partner 3"></a>
+    </div>
+  </section>
+
+
+
+  <section class="final container">
+    <div>
+      <h2>Ready to start your journey?</h2>
+      <a class="btn" href="{% url "register" %}">Get Started</a>
+    </div>
+    <a class="btn" href="#">Back to Top</a>
+  </section>
+
+{% endif %}
+{% endblock main %}

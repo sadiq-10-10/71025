@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block main %}
+<h2>Saved Jobs</h2>
+<div class="row">
+    {% for job in saved %}
+  <div class="col-sm-4" style="padding: 16px;justify-content: space-around;">
+      <div class="card" style="margin: 16px;">
+      <div class="card-body">
+        <h5 class="card-title">{{job.job.job_title}} at {{job.job.company.company_name}}</h5>
+        <p class="card-text">{{job.job_description}}</p>
+        <a href="{% url 'job_details' job.id %}" class="btn btn-primary">Details</a>
+      </div>
+    </div>
+</div>
+{% empty%}
+<h4>You have no saved jobs</h4>
+{% endfor %}
+</div>
+{% endblock main %}
+

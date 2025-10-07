@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block main %}
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #1E90FF;
+        }
+        label {
+            display: block;
+            margin-top: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.4rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            width: 48%;
+            margin-top: 2rem;
+            background-color: #1E90FF;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0066ff;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+
+    <div class="container">
+        <h2>Add Education Details</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <p style="color:red;">{{ field.errors }}</p>
+                {% endif %}
+            {% endfor %}
+            <div class="btn-group">
+                <button type="submit" name="action" value="save">Save & Continue</button>
+                <button type="submit" name="action" value="add_more">Save & Add More</button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}
